@@ -1,3 +1,4 @@
+# https://github.com/Gryfin-Paroxysm/pwr-dron-driver
 #------------------------------------------------------------
 
 __START__: 	konfiguracja  \
@@ -15,16 +16,11 @@ UZYWANE_FOLDERY = object         \
 
 konfiguracja:
 	mkdir -p ${UZYWANE_FOLDERY}
-	cp -f "./biblioteki/dynamic_libs/libGLEW.so.2.0.0" 	"./dynamic_libs/libGLEW.so"
-	cp -f "./biblioteki/dynamic_libs/libassimp.so.3.3.1" "./dynamic_libs/libassimp.so.3"
-	cp -f "./biblioteki/dynamic_libs/libreadline.so.7.0" "./dynamic_libs/libreadline.so.7.0"
-	cp -f "./biblioteki/dynamic_libs/libhistory.so.7.0" "./dynamic_libs/libhistory.so.7.0"
 
 #------------------------------------------------------------
 
 CPP_FLAGS = -Wall -pedantic -std=c++11 -Iinc ${INC}
-LD_FLAGS  = -Wall -lglfw3 -lX11 -lXxf86vm -lpthread -lrt -lm -ldl -lXi -lXrandr   \
-			-lXinerama -lXcursor -lGLEW -lSOIL -lassimp -lreadline -lhistory -lxerces-c
+LD_FLAGS  = -ldl -lrt -lX11 -lGLEW -lGL -lSOIL -lglfw -lassimp -lreadline -lhistory -lxerces-c
 
 OBJ  =	object/main.o                 \
 		object/klasa_glowna.o         \
@@ -40,17 +36,15 @@ OBJ  =	object/main.o                 \
 		object/xmlparser4scene.o      \
 		object/dron.o
 
-LIB = -L"./biblioteki/static_libs" \
-	  -L"./biblioteki/dynamic_libs"
 INC = -I"./biblioteki/include"
 
 NAZWA_PROGRAMU = dron
 
 program: ${OBJ}
-	g++ -o ${NAZWA_PROGRAMU} ${OBJ} -lGL ${LIB} ${INC} ${LD_FLAGS}
+	g++ -o ${NAZWA_PROGRAMU} ${OBJ} ${LD_FLAGS} ${INC} 
 
 program_debug: ${OBJ}
-	g++ -g -o ${NAZWA_PROGRAMU} ${OBJ} -lGL ${LIB} ${INC} ${LD_FLAGS}
+	g++ -g -o ${NAZWA_PROGRAMU} ${OBJ} ${LD_FLAGS} ${INC}
 
 #------------------------------------------------------------
 
@@ -115,7 +109,7 @@ CPP_DYNAMIC_FLAGS = -Wall -pedantic -std=c++11 -Iinc -I"./wtyczki/inc" -fPIC
 LD_DYNAMIC_FLAGS = -Wall -shared
 
 plugin_fly: plugin_fly.o
-	g++ ${LD_DYNAMIC_FLAGS} -o dynamic_libs/Fly.so wtyczki/object/plugin_fly.o object/dron.o 
+	g++ ${LD_DYNAMIC_FLAGS} -o dynamic_libs/Fly.so wtyczki/object/plugin_fly.o object/dron.o
 
 plugin_fly.o: wtyczki/src/plugin_fly.cpp wtyczki/inc/plugin_fly.hh inc/plugin.hh inc/pamiec_wspoldzielona.hh
 	g++ -c ${CPP_DYNAMIC_FLAGS} \

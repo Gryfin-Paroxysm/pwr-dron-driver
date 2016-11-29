@@ -139,7 +139,7 @@ void C_klasa_glowna::sterowanie_dronem(){
     std::cout << "alfa: "; double a; std::cin >> a;
     stringstream strumien_informacji;
     char srednik = ';';
-    strumien_informacji << x << srednik << y << srednik << z << srednik << a;
+    strumien_informacji << "s" << srednik << x << srednik << y << srednik << z << srednik << a;
     string infromacja = strumien_informacji.str();
     przekaz_informacje_do_pamieci(infromacja);
 }
