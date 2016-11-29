@@ -86,6 +86,7 @@ void C_opengl_framework::inicjalizuj_GLEW(){
     glewExperimental = GL_TRUE;
     glewInit();
     glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
 }
 
 void C_opengl_framework::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode){

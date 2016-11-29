@@ -88,13 +88,13 @@ void C_scene::wyslij_informacje_do_wizualizacji(C_dron *dron) const{
     for(unsigned i=0;i<dron->_scena._przeszkody.size();i++){
         std::stringstream strumien_informacji;
         strumien_informacji << 'p' << ';';
-        strumien_informacji << dron->_scena._przeszkody[i]._nazwa_przeszkody << ';';
         strumien_informacji << dron->_scena._przeszkody[i]._pozycja._x << ';';
         strumien_informacji << dron->_scena._przeszkody[i]._pozycja._y << ';';
         strumien_informacji << dron->_scena._przeszkody[i]._pozycja._z << ';';
         strumien_informacji << dron->_scena._przeszkody[i]._rozmiar._x << ';';
         strumien_informacji << dron->_scena._przeszkody[i]._rozmiar._y << ';';
-        strumien_informacji << dron->_scena._przeszkody[i]._rozmiar._z;
+        strumien_informacji << dron->_scena._przeszkody[i]._rozmiar._z << ';';
+        strumien_informacji << dron->_scena._przeszkody[i]._nazwa_przeszkody;
         std::string informacja = strumien_informacji.str();
         dron->przekaz_informacje_do_pamieci(informacja);
         /*trzeba poczekać aż informacje zostaną przekazane, to rozwiązanie jest nieprawidłowe, ale na inne nie ma czasu*/
