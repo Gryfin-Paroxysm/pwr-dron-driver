@@ -1,18 +1,27 @@
-
 *) wtyczki przerobić
 *) rozdzielić plik opengl_window
 *) xml - poprawić co nieco
-*) diagram przepływu
-*) DoxyGen
-*) repozytorium git
+*) DoxyGen - warning'i
+*) komentarze do kodu
 
 o) obracanie śmigiełek
 o) detekcja kolizji
-o) pakiet instalacyjny
 
 *) brak komunikacji dwustronnej
 *) brak ręcznego sterowania dronem 
 *) zła/kiepska obsługa zamykania okna opengl
 *) prawdopodobne wycieki pamięci
 *) nieuporządkowany kod
-*) inculdy systemowe
+*) dron startuje tylko z pozycji 0
+*) ręczne sterowanie zadaniowe
+*) obsługa okna - przeciąganie/zmiana rozmiaru
+*) prawa autorskie - wykorzystane materiały,publikacje,źródła 
+
+--- zawsze uaktualnić
+
+*) pakiet instalacyjny
+*) repozytorium git
+*) DoxyGen
+	- diagram przepływu
+	- komentarze w programie
+	- zdjęcie z programu

@@ -1,26 +1,24 @@
 # https://github.com/Gryfin-Paroxysm/pwr-dron-driver
 #------------------------------------------------------------
 
-__START__: 	konfiguracja  \
-			program       \
-			plugin_fly    \
-			plugin_rotate \
-			plugin_turn   \
-			plugin_pause  \
-			plugin_scene
-	export LD_LIBRARY_PATH="./dynamic_libs"; ./${NAZWA_PROGRAMU}
+WTYCZKI = plugin_fly    \
+		  plugin_rotate \
+		  plugin_turn   \
+		  plugin_pause  \
+		  plugin_scene
 
 UZYWANE_FOLDERY = object         \
 				  wtyczki/object \
 				  dynamic_libs
 
-konfiguracja:
-	mkdir -p ${UZYWANE_FOLDERY}
+NAZWA_PROGRAMU = dron
 
-#------------------------------------------------------------
+CPP_FLAGS = -Wall -pedantic -std=c++11 -I"./inc"
+LD_FLAGS  = -ldl -lrt -lX11 -lGLEW -lGL -lSOIL -lglfw -lassimp \
+			-lreadline -lhistory -lxerces-c
 
-CPP_FLAGS = -Wall -pedantic -std=c++11 -Iinc ${INC}
-LD_FLAGS  = -ldl -lrt -lX11 -lGLEW -lGL -lSOIL -lglfw -lassimp -lreadline -lhistory -lxerces-c
+CPP_DYNAMIC_FLAGS = -Wall -pedantic -std=c++11 -Iinc -I"./wtyczki/inc" -fPIC
+LD_DYNAMIC_FLAGS = -Wall -shared
 
 OBJ  =	object/main.o                 \
 		object/klasa_glowna.o         \
@@ -36,15 +34,23 @@ OBJ  =	object/main.o                 \
 		object/xmlparser4scene.o      \
 		object/dron.o
 
-INC = -I"./biblioteki/include"
+#------------------------------------------------------------
 
-NAZWA_PROGRAMU = dron
+__START__: 	konfiguracja  \
+			program       \
+			${WTYCZKI}
+	export LD_LIBRARY_PATH="./dynamic_libs"; ./${NAZWA_PROGRAMU}
+
+konfiguracja:
+	mkdir -p ${UZYWANE_FOLDERY}
+
+#------------------------------------------------------------
 
 program: ${OBJ}
-	g++ -o ${NAZWA_PROGRAMU} ${OBJ} ${LD_FLAGS} ${INC} 
+	g++ -o ${NAZWA_PROGRAMU} ${OBJ} ${LD_FLAGS}
 
 program_debug: ${OBJ}
-	g++ -g -o ${NAZWA_PROGRAMU} ${OBJ} ${LD_FLAGS} ${INC}
+	g++ -g -o ${NAZWA_PROGRAMU} ${OBJ} ${LD_FLAGS}
 
 #------------------------------------------------------------
 
@@ -105,9 +111,6 @@ object/dron.o: src/dron.cpp inc/dron.hh
 
 #------------------------------------------------------------
 
-CPP_DYNAMIC_FLAGS = -Wall -pedantic -std=c++11 -Iinc -I"./wtyczki/inc" -fPIC
-LD_DYNAMIC_FLAGS = -Wall -shared
-
 plugin_fly: plugin_fly.o
 	g++ ${LD_DYNAMIC_FLAGS} -o dynamic_libs/Fly.so wtyczki/object/plugin_fly.o object/dron.o
 
@@ -152,11 +155,7 @@ debug_wewnetrzny:
 	make clean    \
 	konfiguracja  \
 	program_debug \
-	plugin_fly    \
-	plugin_rotate \
-	plugin_turn   \
-	plugin_pause  \
-	plugin_scene
+	${WTYCZKI}
 	export LD_LIBRARY_PATH="./dynamic_libs"; gdb ./${NAZWA_PROGRAMU}
 
 valgrind_wewnetrzny:
